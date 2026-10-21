@@ -62,10 +62,51 @@ Para activarlo, define en Vercel (o en `.env.local`) al menos un canal — ver `
 
 | Canal | Variables |
 | --- | --- |
-| Correo con [Resend](https://resend.com) | `RESEND_API_KEY`, `CONTACTO_CORREO_DESTINO`, `CONTACTO_CORREO_REMITENTE` (dominio verificado en Resend) |
+| Correo con [Resend](https://resend.com) | `RESEND_API_KEY`, `CONTACTO_CORREO_DESTINO` y, opcional, `CONTACTO_CORREO_REMITENTE` (ver guía abajo) |
 | Webhook (CRM, Google Apps Script, Make, Zapier…) | `FORMULARIO_WEBHOOK_URL` y, opcional, `FORMULARIO_WEBHOOK_SECRETO` |
 
 Ninguna clave lleva el prefijo `NEXT_PUBLIC_`, así que nunca llegan al navegador.
+
+### Activar el correo con Resend
+
+**1. Cuenta y clave en Resend**
+
+1. Crea la cuenta en [resend.com](https://resend.com). Si aún no hay dominio propio, créala con el
+   **mismo correo que va a recibir las solicitudes** (ver «Sin dominio propio»).
+2. *API Keys → Create API Key*: permiso **Sending access**. Cópiala al crearla (Resend no la vuelve a mostrar).
+
+**2. Remitente**
+
+- **Con dominio propio (recomendado para producción):** *Domains → Add Domain* (por ejemplo
+  `obelcolombia.com`), agrega en el DNS del dominio los registros que indica Resend (SPF y DKIM) y
+  espera el estado *Verified*. El remitente será, por ejemplo, `OBEL Colombia <web@obelcolombia.com>`.
+- **Sin dominio propio (para empezar):** deja `CONTACTO_CORREO_REMITENTE` vacío. El sitio usa el
+  remitente de prueba `onboarding@resend.dev`, que **solo entrega en el correo de la cuenta de
+  Resend**, así que `CONTACTO_CORREO_DESTINO` debe ser ese mismo correo. Es una opción de prueba: con
+  dominio verificado la entrega es más fiable y se puede enviar a cualquier correo.
+
+**3. Variables en Vercel**
+
+*Project → Settings → Environment Variables* (entornos *Production* y *Preview*):
+
+| Variable | Valor |
+| --- | --- |
+| `RESEND_API_KEY` | la clave `re_…` (marca **Sensitive**) |
+| `CONTACTO_CORREO_DESTINO` | correo(s) que reciben las solicitudes, separados por coma |
+| `CONTACTO_CORREO_REMITENTE` | opcional: `OBEL Colombia <web@tudominio.com>` |
+
+Las variables solo aplican a despliegues nuevos: después de guardarlas, ve a *Deployments* y usa
+*Redeploy* en el último despliegue.
+
+**4. Probar**
+
+Envía una solicitud desde el sitio publicado: debe mostrar «Recibimos tu solicitud» y llegar un correo
+con los datos (responder a ese correo le escribe a quien llenó el formulario). Si el sitio dice que no
+pudo confirmar el envío, revisa *Vercel → Logs*: la línea `[prediagnostico] Resend respondió …`
+indica la causa (clave inválida, remitente no autorizado, etc.) sin mostrar datos personales.
+
+En local: copia `.env.example` como `.env.local`, completa los valores, ejecuta `npm run dev` y luego
+`BASE_URL=http://localhost:3000 npm test` (la prueba «sin canal configurado…» enviará un correo de prueba real).
 
 ## WhatsApp
 
@@ -82,7 +123,7 @@ mensaje codificado. WhatsApp nunca se abre de forma automática.
 ## Pendientes antes de publicar
 
 - [ ] **Política de tratamiento de datos personales** (Ley 1581 de 2012): no existe una página validada. El formulario pide autorización sin enlace; cuando exista, pega su URL en `config/sitio.ts → politicaDatosUrl` y aparecerá en el formulario y en el pie.
-- [ ] **Canal de envío del formulario**: configurar Resend o un webhook (ver arriba). Mientras tanto, el formulario deriva honestamente a WhatsApp.
+- [ ] **Canal de envío del formulario**: el cliente eligió Resend; seguir «Activar el correo con Resend» (arriba). Mientras no esté configurado, el formulario deriva honestamente a WhatsApp.
 - [ ] **LinkedIn**: no se pudo verificar la URL exacta de @ObelColombia (LinkedIn bloquea las consultas sin sesión). Cuando se confirme, pégala en `config/sitio.ts`.
 - [ ] **Dominio**: definir `NEXT_PUBLIC_SITE_URL` para canonical, sitemap y datos estructurados con el dominio propio.
 - [ ] **Foto de Xiomara Belalcázar**: se tomó del portafolio (432 × 592 px) porque no venía como archivo aparte; conviene reemplazarla por el original en alta resolución en `assets/equipo/xiomara-belalcazar.jpg`.

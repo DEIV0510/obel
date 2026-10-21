@@ -2,7 +2,8 @@
  * Entrega de solicitudes de prediagnóstico (solo servidor).
  *
  * Canales disponibles, activados con variables de entorno (ver .env.example):
- *   1. Correo con Resend      RESEND_API_KEY + CONTACTO_CORREO_DESTINO + CONTACTO_CORREO_REMITENTE
+ *   1. Correo con Resend      RESEND_API_KEY + CONTACTO_CORREO_DESTINO
+ *                             (+ CONTACTO_CORREO_REMITENTE de un dominio verificado)
  *   2. Webhook (CRM, Make,
  *      Zapier, Apps Script…)  FORMULARIO_WEBHOOK_URL (+ FORMULARIO_WEBHOOK_SECRETO opcional)
  *
@@ -16,15 +17,28 @@ export type ResultadoEntrega = "enviado" | "no_configurado" | "error";
 
 const TIEMPO_MAXIMO_MS = 8000;
 
+/**
+ * Remitente de prueba de Resend. Funciona sin dominio propio, pero solo
+ * entrega en el correo con el que se creó la cuenta de Resend: sirve mientras
+ * CONTACTO_CORREO_DESTINO sea ese mismo correo.
+ */
+const REMITENTE_DE_PRUEBA = "OBEL Colombia <onboarding@resend.dev>";
+
+/** Pistas para los registros de Vercel según la respuesta de Resend. */
+const PISTAS_RESEND: Record<number, string> = {
+  401: "RESEND_API_KEY no es válida o fue revocada.",
+  403: "Resend no autoriza el remitente: verifica el dominio de CONTACTO_CORREO_REMITENTE o, con el remitente de prueba, usa como destino el correo de la cuenta de Resend.",
+  422: "Resend rechazó los datos del mensaje (revisa el formato de CONTACTO_CORREO_DESTINO y CONTACTO_CORREO_REMITENTE).",
+  429: "Se superó el límite de envíos de Resend.",
+};
+
 function variable(nombre: string): string {
   return process.env[nombre]?.trim() ?? "";
 }
 
 export function canalesConfigurados() {
   return {
-    correo: Boolean(
-      variable("RESEND_API_KEY") && variable("CONTACTO_CORREO_DESTINO") && variable("CONTACTO_CORREO_REMITENTE"),
-    ),
+    correo: Boolean(variable("RESEND_API_KEY") && variable("CONTACTO_CORREO_DESTINO")),
     webhook: Boolean(variable("FORMULARIO_WEBHOOK_URL")),
   };
 }
@@ -89,7 +103,7 @@ async function enviarCorreo(s: Solicitud, fecha: string): Promise<boolean> {
         "User-Agent": "obel-colombia-web/1.0",
       },
       body: JSON.stringify({
-        from: variable("CONTACTO_CORREO_REMITENTE"),
+        from: variable("CONTACTO_CORREO_REMITENTE") || REMITENTE_DE_PRUEBA,
         to: destino,
         ...(conRespuesta ? { reply_to: s.correo } : {}),
         subject: `Prediagnóstico: ${s.nombre}${s.organizacion ? ` · ${s.organizacion}` : ""}`,
@@ -105,8 +119,11 @@ async function enviarCorreo(s: Solicitud, fecha: string): Promise<boolean> {
   if (respuesta.status === 422 || respuesta.status === 400) respuesta = await enviar(false);
 
   if (!respuesta.ok) {
-    // Solo el estado: nunca se registran los datos personales.
-    console.error(`[prediagnostico] Resend respondió ${respuesta.status}`);
+    // Solo el estado, el tipo de error y una pista: nunca los datos personales.
+    const error = (await respuesta.json().catch(() => ({}))) as { name?: unknown };
+    const tipo = typeof error.name === "string" ? ` (${error.name})` : "";
+    const pista = PISTAS_RESEND[respuesta.status] ?? "";
+    console.error(`[prediagnostico] Resend respondió ${respuesta.status}${tipo}. ${pista}`.trim());
   }
   return respuesta.ok;
 }
