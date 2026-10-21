@@ -67,8 +67,9 @@
 }
 
 .flotante:focus-visible {
-  outline: 2px solid var(--c-amarillo);
-  outline-offset: 3px;
+  outline: 2px solid var(--c-negro);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--c-amarillo);
 }
 
 /* El menú móvil abierto tiene prioridad */

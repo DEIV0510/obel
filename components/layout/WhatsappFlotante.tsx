@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { enlaceWhatsapp, mensajes } from "@/lib/whatsapp";
 import { IconoWhatsapp } from "@/components/ui/Iconos";
 import styles from "./WhatsappFlotante.module.css";
@@ -13,6 +14,7 @@ import styles from "./WhatsappFlotante.module.css";
  */
 export function WhatsappFlotante() {
   const [visible, setVisible] = useState(false);
+  const ruta = usePathname();
 
   useEffect(() => {
     let pasoPortada = false;
@@ -44,7 +46,7 @@ export function WhatsappFlotante() {
       observadorPortada.disconnect();
       observadorZonas.disconnect();
     };
-  }, []);
+  }, [ruta]);
 
   return (
     <a

@@ -84,7 +84,10 @@ export function normalizar(entrada: Record<string, unknown>): Solicitud {
   };
 }
 
-const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// Parte local sin espacios ni separadores; dominio con etiquetas [a-z0-9-] separadas por un
+// solo punto (evita «gmail..com», «gmail.com.» o «gmail,com», que el servicio de correo rechaza).
+const CORREO =
+  /^(?!\.)(?!.*\.\.)[^\s@,;:<>()"[\]\\]+(?<!\.)@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}$/i;
 const TELEFONO_PERMITIDO = /^[+\d\s().-]+$/;
 
 export function validarCampo(campo: CampoSolicitud, s: Solicitud): string | undefined {
@@ -142,10 +145,10 @@ export function etiquetaServicio(valor: string): string {
 }
 
 /**
- * Mensaje de WhatsApp con los datos que la persona decidió compartir. Se
- * muestra completo antes de abrir WhatsApp.
+ * Mensaje de WhatsApp con los datos que la persona decidió compartir, después
+ * del saludo de prediagnóstico. Se muestra completo antes de abrir WhatsApp.
  */
-export function mensajeWhatsappSolicitud(s: Solicitud): string {
+export function mensajeWhatsappSolicitud(s: Solicitud, saludo: string): string {
   const datos = [
     ["Nombre", s.nombre],
     ["Organización", s.organizacion],
@@ -155,7 +158,7 @@ export function mensajeWhatsappSolicitud(s: Solicitud): string {
   ]
     .filter(([, valor]) => valor)
     .map(([campo, valor]) => `${campo}: ${valor}`);
-  const partes = ["Hola, quisiera solicitar un prediagnóstico inicial con OBEL Colombia.", datos.join("\n")];
+  const partes = [saludo, datos.join("\n")];
   if (s.descripcion) partes.push(`Necesidad: ${s.descripcion}`);
   return partes.filter(Boolean).join("\n\n");
 }

@@ -30,8 +30,8 @@ export function Propuesta() {
 
         <div className={styles.cuerpo}>
           <p className={styles.sintesis} data-revelar>
-            Integramos <strong>estrategia, técnica y mercado</strong> en un solo proceso para que cada idea se convierta
-            en un proyecto estructurado, financiable y comercialmente viable.
+            Integramos <strong>estrategia, técnica y mercado</strong> en un solo proceso para transformar ideas en
+            proyectos estructurados, financiables y comercialmente viables.
           </p>
 
           <ol className={styles.diferenciales} role="list">

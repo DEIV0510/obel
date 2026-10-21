@@ -186,3 +186,15 @@
   display: block !important;
   margin-top: var(--s-4);
 }
+
+@media (forced-colors: active) {
+  .pestana[aria-selected="true"]::after {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .pestana[aria-selected="true"] {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}

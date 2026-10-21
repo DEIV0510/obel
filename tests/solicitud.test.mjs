@@ -33,6 +33,15 @@ test("exige los campos obligatorios", () => {
   assert.equal(errores.organizacion, undefined, "la organización es opcional");
 });
 
+test("rechaza correos mal escritos que el servicio de correo no acepta", () => {
+  for (const correo of ["juan@gmail..com", "juan@gmail.com.", "juan@gmail,com.co", "a@b.co;x", ".ana@x.co", "ana.@x.co", "ana@-x.co"]) {
+    assert.ok(validar(normalizar({ ...valida, correo })).correo, correo);
+  }
+  for (const correo of ["ana.maria+obel@fundacion-ejemplo.org.co", "A@B.CO"]) {
+    assert.equal(validar(normalizar({ ...valida, correo })).correo, undefined, correo);
+  }
+});
+
 test("rechaza correos y teléfonos inválidos", () => {
   const e = validar(normalizar({ ...valida, correo: "ana@", whatsapp: "12ab" }));
   assert.ok(e.correo);
@@ -55,8 +64,10 @@ test("elimina caracteres de control", () => {
 });
 
 test("el mensaje de WhatsApp incluye solo lo que la persona escribió", () => {
-  const m = mensajeWhatsappSolicitud(normalizar({ ...valida, organizacion: "" }));
-  assert.match(m, /^Hola, quisiera solicitar un prediagnóstico inicial con OBEL Colombia\./);
+  const saludo =
+    "Hola, quisiera solicitar un prediagnóstico inicial con OBEL Colombia para conversar sobre un proyecto o necesidad de mi organización.";
+  const m = mensajeWhatsappSolicitud(normalizar({ ...valida, organizacion: "" }), saludo);
+  assert.ok(m.startsWith(saludo + "\n\n"));
   assert.match(m, /Servicio de interés: Formulación y gestión de proyectos/);
   assert.doesNotMatch(m, /Organización:/);
   assert.doesNotMatch(m, /\+57 300/, "no repite el número desde el que ya escribe");

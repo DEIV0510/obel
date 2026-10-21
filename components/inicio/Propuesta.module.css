@@ -6,7 +6,7 @@
   margin-top: var(--s-6);
   max-width: 17ch;
   font-family: var(--f-display);
-  font-size: clamp(2.3rem, 1.1rem + 4.9vw, 6.1rem);
+  font-size: clamp(min(2.3rem, 10.5vw), 1.1rem + 4.9vw, 6.1rem);
   line-height: 0.98;
   letter-spacing: -0.025em;
   view-timeline: --frase block;
@@ -31,7 +31,7 @@
 
 @keyframes iluminar {
   from {
-    color: rgb(255 255 255 / 0.28);
+    color: rgb(255 255 255 / 0.42);
   }
   to {
     color: var(--c-blanco);

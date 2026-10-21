@@ -120,3 +120,11 @@
 .item[open]::details-content {
   height: auto;
 }
+
+@media (forced-colors: active) {
+  .signo::before,
+  .signo::after {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}

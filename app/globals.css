@@ -192,6 +192,7 @@ h4 {
   font-weight: 400;
   line-height: 1.05;
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 p {
@@ -217,6 +218,11 @@ ol[role="list"] {
 
 [hidden] {
   display: none !important;
+}
+
+/* Contenedores que reciben el foco por programa (salto al contenido, avisos) */
+[tabindex="-1"]:focus {
+  outline: none;
 }
 
 /* ── Utilidades ───────────────────────────────────────────── */
@@ -352,6 +358,21 @@ ol[role="list"] {
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
     transition-delay: 0ms !important;
+  }
+}
+
+@media print {
+  :root[data-revelar="activo"] [data-revelar] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  header,
+  #menu-movil,
+  #intro,
+  .saltar {
+    display: none !important;
   }
 }
 

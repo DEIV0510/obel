@@ -49,6 +49,21 @@ test("trampa para bots → 400 y nunca «enviado»", opciones, async () => {
   assert.equal((await r.json()).ok, false);
 });
 
+test("envío más rápido que una persona → 400", opciones, async () => {
+  const r = await enviar({ ...valida, transcurrido: 300 });
+  assert.equal(r.status, 400);
+});
+
+test("tipo de contenido no admitido → 415", opciones, async () => {
+  const r = await fetch(`${BASE}/api/prediagnostico`, { method: "POST", headers: { "Content-Type": "text/plain" }, body: "hola" });
+  assert.equal(r.status, 415);
+});
+
+test("cuerpo demasiado grande → 400", opciones, async () => {
+  const r = await enviar({ ...valida, descripcion: "x".repeat(20000) });
+  assert.equal(r.status, 400);
+});
+
 test("otro origen (CSRF) → 400", opciones, async () => {
   const r = await enviar(valida, { Origin: "https://sitio-ajeno.example" });
   assert.equal(r.status, 400);

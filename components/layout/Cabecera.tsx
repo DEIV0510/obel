@@ -22,6 +22,8 @@ export function Cabecera() {
   const enInicio = usePathname() === "/";
   // En la portada, anclas locales; desde otras páginas, vuelven al inicio.
   const ruta = (hash: string) => (enInicio ? hash : `/${hash}`);
+  // La sección activa solo tiene sentido en la portada.
+  const actual = (id: string) => (enInicio && activo === id ? "true" : undefined);
 
   const cabeceraRef = useRef<HTMLElement>(null);
   const botonRef = useRef<HTMLButtonElement>(null);
@@ -71,6 +73,14 @@ export function Cabecera() {
     const html = document.documentElement;
     html.style.overflow = "hidden";
 
+    // Todo lo que no es la cabecera ni el menú queda inerte: los lectores de
+    // pantalla solo recorren el menú y el botón de cerrar (que vive en la cabecera).
+    const fuera = [...document.body.children].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el.tagName !== "SCRIPT" && el !== cabeceraRef.current && el !== panelRef.current,
+    );
+    const yaInertes = new Set(fuera.filter((el) => el.inert));
+    fuera.forEach((el) => (el.inert = true));
+
     const enfocables = () => [
       botonRef.current,
       ...(panelRef.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []),
@@ -106,6 +116,9 @@ export function Cabecera() {
     escritorio.addEventListener("change", alCambiar);
     return () => {
       html.style.removeProperty("overflow");
+      fuera.forEach((el) => {
+        if (!yaInertes.has(el)) el.inert = false;
+      });
       document.removeEventListener("keydown", alTeclear);
       escritorio.removeEventListener("change", alCambiar);
     };
@@ -120,9 +133,15 @@ export function Cabecera() {
         className={styles.cabecera}
         data-tema={tema}
         data-desplazada={desplazada && !abierto ? "true" : undefined}
+        data-menu={abierto ? "true" : undefined}
       >
         <div className={`contenedor ${styles.barra}`}>
-          <a href={ruta("#inicio")} className={styles.marca} aria-label="OBEL Colombia, ir al inicio">
+          <a
+            href={ruta("#inicio")}
+            className={styles.marca}
+            aria-label="OBEL Colombia, ir al inicio"
+            onClick={() => abierto && cerrar(false)}
+          >
             <Logotipo className={styles.logo} />
           </a>
 
@@ -130,7 +149,7 @@ export function Cabecera() {
             <ul role="list">
               {enlacesNav.map((e) => (
                 <li key={e.id}>
-                  <a href={ruta(e.hash)} aria-current={activo === e.id ? "true" : undefined}>
+                  <a href={ruta(e.hash)} aria-current={actual(e.id)}>
                     {e.texto}
                   </a>
                 </li>
@@ -139,7 +158,11 @@ export function Cabecera() {
           </nav>
 
           <div className={styles.acciones}>
-            <a href={ruta("#contacto")} className={`${boton.boton} ${boton.primario} ${boton.compacto} ${styles.cta}`}>
+            <a
+              href={ruta("#contacto")}
+              className={`${boton.boton} ${boton.primario} ${boton.compacto} ${styles.cta}`}
+              onClick={() => abierto && cerrar(false)}
+            >
               <span className={styles.ctaLargo}>Agenda tu prediagnóstico</span>
               <span className={styles.ctaCorto} aria-hidden="true">
                 Prediagnóstico
@@ -168,7 +191,6 @@ export function Cabecera() {
         data-tema="oscuro"
         data-abierto={abierto ? "true" : undefined}
         role="dialog"
-        aria-modal="true"
         aria-label="Menú principal"
         inert={!abierto}
       >
@@ -177,7 +199,7 @@ export function Cabecera() {
             <ol role="list" className={styles.panelLista}>
               {enlacesNav.map((e, i) => (
                 <li key={e.id} style={{ "--i": i } as React.CSSProperties}>
-                  <a href={ruta(e.hash)} onClick={() => cerrar(false)} aria-current={activo === e.id ? "true" : undefined}>
+                  <a href={ruta(e.hash)} onClick={() => cerrar(false)} aria-current={actual(e.id)}>
                     <span className={styles.panelNumero}>{String(i + 1).padStart(2, "0")}</span>
                     {e.texto}
                   </a>

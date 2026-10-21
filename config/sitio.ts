@@ -30,7 +30,10 @@ export interface PerfilSocial {
  */
 function dominioPublico(): string {
   const propio = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (propio) return propio.replace(/\/+$/, "");
+  if (propio) {
+    const conEsquema = /^https?:\/\//i.test(propio) ? propio : `https://${propio}`;
+    return new URL(conEsquema).origin; // si el valor no es una URL válida, la compilación falla aquí
+  }
   const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
   return vercel ? `https://${vercel.replace(/\/+$/, "")}` : "";
 }

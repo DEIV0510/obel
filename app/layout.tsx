@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Inter } from "next/font/google";
 import { preload } from "react-dom";
 import { sitio } from "@/config/sitio";
-import { datosEstructurados, descripcionSitio, jsonLd, tituloSitio } from "@/lib/seo";
+import { datosEstructurados, descripcionSitio, jsonLd, openGraphBase, tituloSitio } from "@/lib/seo";
 import { Cabecera } from "@/components/layout/Cabecera";
 import { Pie } from "@/components/layout/Pie";
 import { WhatsappFlotante } from "@/components/layout/WhatsappFlotante";
@@ -24,7 +24,8 @@ const texto = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(sitio.dominio || "http://localhost:3000"),
+  // Sin dominio, Next usa su propio respaldo (y avisa en la compilación).
+  ...(sitio.dominio ? { metadataBase: new URL(sitio.dominio) } : {}),
   title: {
     default: tituloSitio,
     template: `%s · ${sitio.marca}`,
@@ -41,15 +42,7 @@ export const metadata: Metadata = {
     "comunicación digital",
     "desarrollo organizacional",
   ],
-  ...(sitio.dominio ? { alternates: { canonical: "/" } } : {}),
-  openGraph: {
-    type: "website",
-    locale: "es_CO",
-    siteName: sitio.marca,
-    title: tituloSitio,
-    description: descripcionSitio,
-    ...(sitio.dominio ? { url: "/" } : {}),
-  },
+  openGraph: openGraphBase,
   twitter: {
     card: "summary_large_image",
     site: "@ObelColombia",
@@ -65,8 +58,12 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-/** Marca el documento como «con JavaScript» antes de pintar (evita saltos en el selector de perfiles). */
-const SCRIPT_JS = `document.documentElement.setAttribute("data-js","")`;
+/**
+ * Marca el documento como «con JavaScript» antes de pintar (evita saltos en
+ * el selector de perfiles). Si React no llega a hidratar en 8 s (paquete que
+ * no cargó, navegador antiguo), se retira para volver al modo sin JavaScript.
+ */
+const SCRIPT_JS = `(function(){var r=document.documentElement;r.setAttribute("data-js","");setTimeout(function(){if(!window.__obelHidratado)r.removeAttribute("data-js")},8000)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // Máscaras del logotipo: se piden pronto para que aparezca con la primera pintura.

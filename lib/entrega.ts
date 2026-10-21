@@ -80,23 +80,29 @@ async function enviarCorreo(s: Solicitud, fecha: string): Promise<boolean> {
 <p style="color:#666;font-size:12px;margin-top:24px">Recibida: ${escaparHtml(fecha)} · Sitio web OBEL Colombia</p>
 </body></html>`;
 
-  const respuesta = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${variable("RESEND_API_KEY")}`,
-      "Content-Type": "application/json",
-      "User-Agent": "obel-colombia-web/1.0",
-    },
-    body: JSON.stringify({
-      from: variable("CONTACTO_CORREO_REMITENTE"),
-      to: destino,
-      reply_to: s.correo,
-      subject: `Prediagnóstico: ${s.nombre}${s.organizacion ? ` · ${s.organizacion}` : ""}`,
-      text: texto,
-      html,
-    }),
-    signal: AbortSignal.timeout(TIEMPO_MAXIMO_MS),
-  });
+  const enviar = (conRespuesta: boolean) =>
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${variable("RESEND_API_KEY")}`,
+        "Content-Type": "application/json",
+        "User-Agent": "obel-colombia-web/1.0",
+      },
+      body: JSON.stringify({
+        from: variable("CONTACTO_CORREO_REMITENTE"),
+        to: destino,
+        ...(conRespuesta ? { reply_to: s.correo } : {}),
+        subject: `Prediagnóstico: ${s.nombre}${s.organizacion ? ` · ${s.organizacion}` : ""}`,
+        text: texto,
+        html,
+      }),
+      signal: AbortSignal.timeout(TIEMPO_MAXIMO_MS),
+    });
+
+  let respuesta = await enviar(true);
+  // Si Resend rechaza los datos (p. ej. el reply_to), se reintenta una vez sin
+  // él: el correo de la persona sigue en el cuerpo y la solicitud no se pierde.
+  if (respuesta.status === 422 || respuesta.status === 400) respuesta = await enviar(false);
 
   if (!respuesta.ok) {
     // Solo el estado: nunca se registran los datos personales.

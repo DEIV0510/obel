@@ -7,6 +7,15 @@ export const tituloSitio = "OBEL Colombia · Consultoría de proyectos y estrate
 export const descripcionSitio =
   "Consultoría en Cali para formular y gestionar proyectos, planeación estratégica, marketing y comunicación digital. Emprendimientos, empresas, ONG y gobierno.";
 
+/** Open Graph común (la portada le añade su URL canónica). */
+export const openGraphBase = {
+  type: "website",
+  locale: "es_CO",
+  siteName: sitio.marca,
+  title: tituloSitio,
+  description: descripcionSitio,
+} as const;
+
 /** URL absoluta a partir de una ruta; vacía si aún no hay dominio definido. */
 export function urlAbsoluta(ruta = "/"): string {
   return sitio.dominio ? `${sitio.dominio}${ruta === "/" ? "/" : ruta}` : "";

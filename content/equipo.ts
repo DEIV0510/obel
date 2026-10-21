@@ -17,8 +17,7 @@ export interface Integrante {
 /**
  * Equipo según el portafolio de servicios 2026 (nombres, profesiones y
  * perfiles tal como están documentados). Fotografías originales entregadas
- * por la empresa; la de Xiomara Belalcázar se tomó del propio portafolio
- * porque no venía como archivo independiente.
+ * por la empresa, solo encuadradas.
  */
 export const equipo: Integrante[] = [
   {
@@ -37,7 +36,7 @@ export const equipo: Integrante[] = [
       "Estratega en comunicación organizacional y posicionamiento de marca; experta en gestión reputacional y articulación de procesos institucionales.",
     foto: xiomara,
     alt: "Xiomara Belalcázar Castillo, con traje azul oscuro y blusa blanca, de brazos cruzados",
-    encuadre: "50% 16%",
+    encuadre: "50% 6%",
   },
   {
     nombre: "Kellyn Vanessa Vélez Duque",

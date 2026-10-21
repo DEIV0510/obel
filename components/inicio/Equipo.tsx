@@ -15,8 +15,7 @@ export function Equipo() {
             </h2>
           </div>
           <p className="lead">
-            Mercadeo, comunicación, administración y derecho: perfiles complementarios que acompañan cada proyecto desde la
-            estrategia hasta la gestión.
+            Mercadeo, comunicación, administración y derecho: perfiles complementarios en estrategia, proyectos y gestión.
           </p>
         </header>
 
@@ -28,7 +27,7 @@ export function Equipo() {
                   src={p.foto}
                   alt={p.alt}
                   fill
-                  sizes="(min-width: 64rem) 22vw, (min-width: 40rem) 40vw, 5.5rem"
+                  sizes="(min-width: 88.5rem) 19.2rem, (min-width: 64rem) 22vw, (min-width: 40rem) 45vw, 5.5rem"
                   placeholder="blur"
                   style={{ objectPosition: p.encuadre }}
                 />

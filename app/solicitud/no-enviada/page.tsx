@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const MOTIVOS: Record<string, string> = {
   validacion: "Algunos datos no son válidos o faltan campos obligatorios. Vuelve al formulario y revísalos.",
   no_configurado: "El envío por formulario todavía no está habilitado en este sitio, así que tus datos no se enviaron.",
-  error_envio: "No pudimos enviar tu solicitud en este momento y tus datos no se guardaron.",
+  error_envio: "No pudimos confirmar el envío de tu solicitud.",
   limite: "Recibimos varias solicitudes desde tu conexión en poco tiempo. Espera unos minutos antes de intentarlo de nuevo.",
   rechazado: "No pudimos procesar la solicitud.",
 };
@@ -21,7 +21,7 @@ const MOTIVOS: Record<string, string> = {
 /** Resultado del formulario cuando el navegador no ejecuta JavaScript. */
 export default async function SolicitudNoEnviada({ searchParams }: PageProps<"/solicitud/no-enviada">) {
   const { motivo } = await searchParams;
-  const texto = (typeof motivo === "string" && MOTIVOS[motivo]) || MOTIVOS.rechazado;
+  const texto = typeof motivo === "string" && Object.hasOwn(MOTIVOS, motivo) ? MOTIVOS[motivo] : MOTIVOS.rechazado;
 
   return (
     <PaginaEstado etiqueta="Prediagnóstico" titulo="Tu solicitud no se envió.">

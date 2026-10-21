@@ -29,7 +29,7 @@ export function IndiceServicios({ items }: { items: Item[] }) {
   }, []);
 
   return (
-    <nav className={styles.indice} aria-label="Líneas de servicio">
+    <nav className={styles.indice} aria-label="Índice de servicios">
       <ol role="list">
         {items.map((s) => (
           <li key={s.id} className={styles[s.color]}>

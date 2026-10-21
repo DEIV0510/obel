@@ -10,9 +10,9 @@
 *.tsbuildinfo
 next-env.d.ts
 
-# entorno local (nunca subir secretos)
-.env
-.env*.local
+# entorno (nunca subir secretos; solo la plantilla)
+.env*
+!.env.example
 
 # logs
 npm-debug.log*

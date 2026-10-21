@@ -4,6 +4,7 @@ import { enlaceMapa } from "@/lib/seo";
 import { enlaceWhatsapp, mensajes, numeroVisible } from "@/lib/whatsapp";
 import { Logotipo } from "@/components/marca/Logotipo";
 import { IconoWhatsapp, iconosRed } from "@/components/ui/Iconos";
+import { ScriptEnLinea } from "@/components/ui/ScriptEnLinea";
 import boton from "@/components/ui/Boton.module.css";
 import { enlacesNav } from "./navegacion";
 import styles from "./Pie.module.css";
@@ -90,7 +91,13 @@ export function Pie() {
 
       <div className={`contenedor ${styles.legal}`}>
         <p>
-          © {anio} {sitio.marca}. Todos los derechos reservados.
+          ©{" "}
+          <span id="anio-pie" suppressHydrationWarning>
+            {anio}
+          </span>{" "}
+          {sitio.marca}. Todos los derechos reservados.
+          {/* La página es estática: el año se actualiza en el navegador */}
+          <ScriptEnLinea html={`document.getElementById("anio-pie").textContent=new Date().getFullYear()`} />
         </p>
         <p className={styles.legalDerecha}>
           {sitio.politicaDatosUrl ? <a href={sitio.politicaDatosUrl}>Política de tratamiento de datos</a> : null}

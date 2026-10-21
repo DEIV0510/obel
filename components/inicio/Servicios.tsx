@@ -69,6 +69,7 @@ export function Servicios() {
                   </a>
                   <a href="#contacto" className={boton.enlace} data-servicio={s.id}>
                     o solicita un prediagnóstico
+                    <span className="solo-lectores"> de {s.titulo.toLowerCase()}</span>
                     <IconoFlecha className={boton.flecha} />
                   </a>
                 </div>

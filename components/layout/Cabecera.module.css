@@ -316,3 +316,16 @@
     clip-path: none;
   }
 }
+
+@media (forced-colors: active) {
+  .lineas,
+  .lineas::before {
+    forced-color-adjust: none;
+    background: ButtonText;
+  }
+}
+
+/* Con el menú abierto la cabecera es sólida: la lista no se ve por debajo */
+.cabecera[data-menu="true"] {
+  background: var(--fondo);
+}

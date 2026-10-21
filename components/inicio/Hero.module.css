@@ -49,7 +49,9 @@
   display: block;
   overflow: clip;
   overflow-clip-margin: 0.12em;
-  padding-bottom: 0.04em;
+  /* Espacio propio para los descendentes (Safari no admite overflow-clip-margin) */
+  padding-bottom: 0.1em;
+  margin-bottom: -0.06em;
 }
 
 .linea > span {
@@ -205,7 +207,30 @@
   }
 }
 
-:global(:root:has(#intro[data-estado="cargando"])) .hero [data-entrada],
+/* Mientras la pantalla de carga cubre la portada, el titular sube por debajo
+   del telón (así se pinta desde el principio) y el resto espera con otra
+   animación idéntica pero retrasada 4 s: si el script nunca cambiara de
+   estado, la portada aparecería sola junto con el retiro de emergencia.
+   Al pasar a «saliendo», el cambio de nombre reinicia la entrada normal. */
+:global(:root:has(#intro[data-estado="cargando"])) .hero [data-entrada]:not(.linea > *) {
+  animation-name: entrar-espera;
+  animation-delay: calc(4s + var(--i, 0) * 90ms);
+}
+
 :global(:root:has(#intro[data-estado="cargando"])) .resultados::after {
-  animation-play-state: paused;
+  animation-name: subrayar-espera;
+  animation-delay: 4.4s;
+}
+
+@keyframes entrar-espera {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+}
+
+@keyframes subrayar-espera {
+  from {
+    transform: scaleX(0);
+  }
 }

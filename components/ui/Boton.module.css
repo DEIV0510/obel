@@ -107,6 +107,10 @@
 /* Enlace textual con subrayado que se dibuja */
 .enlace {
   display: inline-flex;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
   width: fit-content;
   justify-self: start;
   align-items: center;

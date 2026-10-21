@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type ChangeEvent, type FormEvent } from "react";
 import { sitio } from "@/config/sitio";
 import {
   LIMITES,
@@ -15,7 +15,7 @@ import {
   type Errores,
   type Solicitud,
 } from "@/lib/solicitud";
-import { enlaceWhatsapp } from "@/lib/whatsapp";
+import { enlaceWhatsapp, mensajes, numeroVisible } from "@/lib/whatsapp";
 import { IconoFlecha, IconoWhatsapp } from "@/components/ui/Iconos";
 import boton from "@/components/ui/Boton.module.css";
 import styles from "./Formulario.module.css";
@@ -37,12 +37,14 @@ const MENSAJES_ESTADO: Partial<Record<Estado, string>> = {
   no_configurado:
     "El envío por formulario todavía no está habilitado en este sitio, así que tus datos no se enviaron. Puedes continuar por WhatsApp con la información que escribiste.",
   error_envio:
-    "No pudimos enviar tu solicitud en este momento y tus datos no se guardaron. Intenta de nuevo en unos minutos o continúa por WhatsApp.",
+    "No pudimos confirmar el envío de tu solicitud. Intenta de nuevo en unos minutos o continúa por WhatsApp.",
   limite:
     "Recibimos varias solicitudes desde tu conexión en poco tiempo. Espera unos minutos antes de intentarlo de nuevo o continúa por WhatsApp.",
   rechazado:
     "No pudimos procesar la solicitud. Recarga la página e inténtalo de nuevo, o continúa por WhatsApp.",
 };
+
+const suscribirNada = () => () => {};
 
 export function FormularioPrediagnostico() {
   const id = useId();
@@ -54,12 +56,15 @@ export function FormularioPrediagnostico() {
   const [vistaWhatsapp, setVistaWhatsapp] = useState(false);
   const trampa = useRef<HTMLInputElement>(null);
   const inicio = useRef(0);
+  // Tras hidratar, la validación es propia; sin JavaScript actúa la nativa del navegador.
+  const hidratado = useSyncExternalStore(suscribirNada, () => true, () => false);
   const formulario = useRef<HTMLFormElement>(null);
   const exito = useRef<HTMLHeadingElement>(null);
   const vista = useRef<HTMLDivElement>(null);
+  const botonVista = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    inicio.current = Date.now();
+    inicio.current = performance.now();
   }, []);
 
   // Los botones «Solicitar prediagnóstico» de servicios y perfiles preseleccionan el formulario.
@@ -136,7 +141,7 @@ export function FormularioPrediagnostico() {
       const respuesta = await fetch("/api/prediagnostico", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...solicitud, sitio_web: trampa.current?.value ?? "", inicio: inicio.current }),
+        body: JSON.stringify({ ...solicitud, sitio_web: trampa.current?.value ?? "", transcurrido: Math.round(performance.now() - inicio.current) }),
       });
       const datos = (await respuesta.json().catch(() => ({}))) as { ok?: boolean; codigo?: string; errores?: Errores };
 
@@ -161,7 +166,7 @@ export function FormularioPrediagnostico() {
     }
   };
 
-  const mensaje = mensajeWhatsappSolicitud(normalizar({ ...valores }));
+  const mensaje = mensajeWhatsappSolicitud(normalizar({ ...valores }), mensajes.prediagnostico);
   const describir = (campo: CampoSolicitud, ...extra: string[]) =>
     [errores[campo] ? `${id}-${campo}-error` : "", ...extra].filter(Boolean).join(" ") || undefined;
 
@@ -206,10 +211,9 @@ export function FormularioPrediagnostico() {
       className={styles.formulario}
       action="/api/prediagnostico"
       method="post"
-      noValidate
+      noValidate={hidratado}
       onSubmit={enviar}
       aria-describedby={`${id}-nota`}
-      aria-busy={estado === "enviando"}
     >
       <p id={`${id}-nota`} className={styles.nota}>
         Los campos marcados con <span aria-hidden="true">*</span>
@@ -399,7 +403,7 @@ export function FormularioPrediagnostico() {
             onChange={alCambiar}
             onBlur={() => alSalir("autorizacion")}
             aria-invalid={Boolean(errores.autorizacion)}
-            aria-describedby={describir("autorizacion")}
+            aria-describedby={describir("autorizacion", `${id}-aviso-datos`)}
           />
           <span>
             Autorizo a OBEL Colombia a tratar mis datos personales para responder esta solicitud.
@@ -414,6 +418,11 @@ export function FormularioPrediagnostico() {
             </span>
           </span>
         </label>
+        <p id={`${id}-aviso-datos`} className={styles.ayuda}>
+          Responsable: {sitio.marca}, {sitio.direccion.calle}, {sitio.direccion.ciudad} · WhatsApp {numeroVisible()}.
+          Finalidad: atender esta solicitud y contactarte sobre ella. Como titular puedes conocer, actualizar,
+          rectificar y suprimir tus datos, y revocar esta autorización (Ley 1581 de 2012), a través de estos canales.
+        </p>
         {error("autorizacion")}
       </div>
 
@@ -443,13 +452,14 @@ export function FormularioPrediagnostico() {
           onClick={() => setVistaWhatsapp(true)}
           aria-expanded={vistaWhatsapp}
           aria-controls={`${id}-vista`}
+          ref={botonVista}
         >
           <IconoWhatsapp />
           Prefiero continuar por WhatsApp
         </button>
       </div>
 
-      <p className={styles.anuncio} role="status" aria-live="polite">
+      <p className="solo-lectores" role="status" aria-live="polite">
         {anuncio}
       </p>
 
@@ -492,7 +502,14 @@ export function FormularioPrediagnostico() {
             Abrir WhatsApp con este mensaje
             <span className="solo-lectores"> (abre WhatsApp)</span>
           </a>
-          <button type="button" className={boton.enlace} onClick={() => setVistaWhatsapp(false)}>
+          <button
+            type="button"
+            className={boton.enlace}
+            onClick={() => {
+              setVistaWhatsapp(false);
+              botonVista.current?.focus();
+            }}
+          >
             Volver al formulario
           </button>
         </div>
