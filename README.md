@@ -34,7 +34,7 @@ Para probar la API contra un servidor en otro puerto: `BASE_URL=http://localhost
 ```
 app/                  layout, página, API (/api/prediagnostico), SEO (sitemap, robots, manifest, imagen OG)
 components/
-  inicio/             secciones de la portada (Hero, Propuesta, Servicios, Metodología, Sectores, Nosotros, Equipo, Conversión, Preguntas)
+  inicio/             secciones de la portada (Hero, Propuesta, Servicios, Metodología, Sectores, Nosotros con el equipo, Conversión, Preguntas)
   contacto/           sección y formulario de prediagnóstico
   layout/             cabecera, menú móvil, pie y botón flotante de WhatsApp
   intro/              pantalla de carga

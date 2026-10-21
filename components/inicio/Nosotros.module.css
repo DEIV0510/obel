@@ -1,85 +1,123 @@
-.nosotros {
-  overflow: clip;
-}
-
-.intro {
+.reticula {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-6);
+  gap: clamp(2.5rem, 5vw, 4rem);
 }
 
 @media (min-width: 64rem) {
-  .intro {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    gap: var(--separacion);
-    align-items: end;
+  .reticula {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: start;
   }
-}
-
-.titulo {
-  max-width: 14ch;
 }
 
 .texto {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-4);
-  color: var(--texto-2);
-  max-width: 46ch;
+  justify-items: start;
+  gap: var(--s-5);
 }
 
 .destacado {
+  max-width: 44ch;
   font-size: var(--t-lead);
-  line-height: 1.45;
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+
+/* Trayectoria compacta: año + una línea */
+.hitos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  border-top: 1px solid var(--linea);
+}
+
+.hitos li {
+  display: grid;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--linea);
+  font-size: var(--t-sm);
+  color: var(--texto-2);
+}
+
+.hitos strong {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+.periodo {
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  color: var(--texto);
+  white-space: nowrap;
+}
+
+.valores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.valores li {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: var(--c-papel);
+  font-size: var(--t-xs);
+  font-weight: 500;
+}
+
+/* Misión y visión plegadas */
+.declaraciones {
+  width: 100%;
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+}
+
+.declaraciones summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.declaraciones summary::-webkit-details-marker {
+  display: none;
+}
+
+.declaraciones summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  font-weight: 400;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+.declaraciones[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.declaraciones dl {
+  display: grid;
+  gap: var(--s-2);
+  padding-bottom: var(--s-4);
+  font-size: var(--t-sm);
+  color: var(--texto-2);
+}
+
+.declaraciones dt {
+  margin-top: var(--s-2);
+  font-weight: 600;
   color: var(--texto);
 }
 
-/* ── Gráfico de conexión ── */
-.conexion {
-  width: min(100%, 40rem);
-  height: auto;
-  margin: clamp(3rem, 6vw, 5rem) auto 0;
-  overflow: visible;
-  font-family: var(--f-texto);
-}
-
-.conexion text {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  fill: var(--texto-2);
-}
-
-.hilo {
-  fill: none;
-  stroke: var(--linea-fuerte);
-  stroke-width: 1.5;
-  stroke-dasharray: 0.01 0.012;
-}
-
-.nodoA circle {
-  fill: var(--texto);
-}
-
-.nodoB circle {
-  fill: var(--fondo);
-  stroke: var(--texto);
-  stroke-width: 2.5;
-}
-
-.nodoC path {
-  fill: var(--c-amarillo);
-}
-
-@media (max-width: 40rem) {
-  .conexion text {
-    font-size: 24px;
-  }
-}
-
-/* ── Trayectoria ── */
-.subtitulo {
+/* Equipo */
+.equipoTitulo {
+  margin-bottom: var(--s-5);
   font-family: var(--f-texto);
   font-size: var(--t-xs);
   font-weight: 600;
@@ -88,104 +126,59 @@
   color: var(--texto-2);
 }
 
-.trayectoria {
-  margin-top: clamp(3.5rem, 7vw, 6rem);
-}
-
-.hitos {
+.personas {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-6);
-  margin-top: var(--s-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6) var(--s-4);
 }
 
-@media (min-width: 48rem) {
-  .hitos {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--separacion);
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .personas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.hitos li {
+/* Ritmo: la segunda columna baja un poco */
+@media (min-width: 64rem) {
+  .persona:nth-child(even) {
+    transform: translateY(var(--s-7));
+  }
+
+  .equipo {
+    padding-bottom: var(--s-7);
+  }
+}
+
+.foto {
   position: relative;
-  padding-top: var(--s-5);
-  border-top: 1px dashed var(--linea-fuerte);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--r-foto);
+  background: var(--c-gris-200);
+  isolation: isolate;
 }
 
-.hitos li::before {
-  content: "";
-  position: absolute;
-  top: -0.3125rem;
-  left: 0;
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 50%;
-  background: var(--texto);
+.foto img {
+  object-fit: cover;
+  transition: transform 1.2s var(--e-salida);
 }
 
-.hitos li:last-child::before {
-  border-radius: 50% 1px 50% 50%;
-  background: var(--c-amarillo);
-}
-
-.periodo {
-  font-family: var(--f-display);
-  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.hitoNombre {
-  margin-top: var(--s-2);
-  font-weight: 600;
-}
-
-.hitoTexto {
-  margin-top: var(--s-2);
-  font-size: var(--t-sm);
-  color: var(--texto-2);
-}
-
-/* ── Misión y visión ── */
-.declaraciones {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-6);
-  margin-top: clamp(3.5rem, 7vw, 6rem);
-  padding-top: var(--s-6);
-  border-top: 1px solid var(--linea);
-}
-
-@media (min-width: 48rem) {
-  .declaraciones {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--separacion);
+@media (hover: hover) {
+  .persona:hover .foto img {
+    transform: scale(1.04);
   }
 }
 
-.declaraciones p {
+.nombre {
   margin-top: var(--s-3);
-  max-width: 52ch;
-  font-size: 1.125rem;
-  line-height: 1.55;
-}
-
-/* ── Valores ── */
-.valores {
-  margin-top: var(--s-7);
-}
-
-.valores ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2);
-  margin-top: var(--s-4);
-}
-
-.valores li {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--linea-fuerte);
-  border-radius: var(--r-boton);
   font-size: var(--t-sm);
-  font-weight: 500;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cargo {
+  margin-top: var(--s-1);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--texto-2);
 }

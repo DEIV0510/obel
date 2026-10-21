@@ -39,7 +39,7 @@
 /* Titular: Archivo Black, la tipografía de títulos del portafolio. */
 .titulo {
   font-family: var(--f-display);
-  font-size: clamp(2.2rem, 11.6cqi, 6.6rem);
+  font-size: clamp(2.2rem, 11.2cqi, 6.2rem);
   line-height: 0.95;
   letter-spacing: -0.025em;
   text-wrap: initial;
@@ -101,10 +101,37 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  column-gap: var(--s-3);
-  margin-top: var(--s-4);
+  gap: var(--s-3) var(--s-4);
+  margin-top: clamp(1.5rem, 3vh, 2rem);
   font-size: var(--t-sm);
   color: var(--texto-2);
+}
+
+.directo p {
+  display: grid;
+  line-height: 1.3;
+}
+
+.directo .directoTexto {
+  font-weight: 500;
+}
+
+/* Fotos del equipo superpuestas, con el recorte de la esquina O */
+.avatares {
+  display: flex;
+}
+
+.avatares li + li {
+  margin-left: -0.75rem;
+}
+
+.avatares img {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: cover;
+  border: 2px solid var(--c-papel);
+  border-radius: 50% 18% 50% 50%;
+  background: var(--c-gris-200);
 }
 
 .figura {
@@ -115,6 +142,13 @@
 @media (max-width: 63.99rem) {
   .figura {
     width: min(100%, 26rem);
+  }
+}
+
+/* En móvil el diagrama solo mostraría números sueltos: la portada va directo al grano */
+@media (max-width: 39.99rem) {
+  .figura {
+    display: none;
   }
 }
 

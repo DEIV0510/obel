@@ -8,19 +8,19 @@
 export const diferenciales = [
   {
     titulo: "Rigor técnico",
-    texto: "Marco lógico, estudios de factibilidad y planes de negocio construidos con método.",
+    texto: "Marco lógico, factibilidad y planes de negocio con método.",
   },
   {
     titulo: "Territorio y mercado",
-    texto: "Soluciones adaptadas a cada territorio, organización y mercado.",
+    texto: "Soluciones adaptadas a cada contexto.",
   },
   {
     titulo: "Conexión con financiación",
-    texto: "Orientamos los proyectos hacia fuentes de financiación públicas, privadas y de cooperación.",
+    texto: "Fuentes públicas, privadas y de cooperación.",
   },
   {
     titulo: "Innovación aplicada",
-    texto: "Incorporamos herramientas tecnológicas e inteligencia artificial en el análisis y la toma de decisiones.",
+    texto: "Tecnología e inteligencia artificial en el análisis.",
   },
 ];
 
@@ -61,20 +61,17 @@ export const nosotros = {
     {
       periodo: "2018",
       nombre: "Origen",
-      texto:
-        "Nace OBEL como una iniciativa para fortalecer emprendimientos y marcas colombianas, con enfoque en crecimiento estratégico y desarrollo empresarial.",
+      texto: "Nace para fortalecer emprendimientos y marcas colombianas.",
     },
     {
       periodo: "2020 – 2022",
       nombre: "Evolución",
-      texto:
-        "Se diseña y valida una primera solución para el ecosistema emprendedor: un modelo digital que integraba comercialización, educación digital y articulación empresarial.",
+      texto: "Se valida un modelo digital para el ecosistema emprendedor.",
     },
     {
       periodo: "2025 – hoy",
       nombre: "Consolidación",
-      texto:
-        "OBEL se consolida como firma de consultoría en la estructuración de planes, estrategias, programas y proyectos para organizaciones, emprendimientos y entidades gubernamentales.",
+      texto: "Firma de consultoría en planes, programas y proyectos.",
     },
   ],
   mision:

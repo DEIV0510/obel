@@ -42,7 +42,6 @@ export function Sectores() {
     <section
       id="sectores"
       data-nav="servicios"
-      data-tema="blanco"
       className={`seccion ${styles.sectores}`}
       aria-labelledby="sectores-titulo"
     >
@@ -50,10 +49,10 @@ export function Sectores() {
         <header className={styles.encabezado}>
           <p className="antetitulo">Con quién trabajamos</p>
           <h2 id="sectores-titulo" className="titulo-seccion">
-            Organizaciones distintas, una misma forma de avanzar.
+            ¿Qué tipo de organización eres?
           </h2>
-          <p className="lead" id="sectores-ayuda">
-            Selecciona el tipo de organización y descubre por dónde podemos empezar.
+          <p className={styles.ayuda} id="sectores-ayuda">
+            Elige una opción y te mostramos por dónde empezar.
           </p>
         </header>
 

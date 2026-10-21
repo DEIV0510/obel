@@ -28,47 +28,42 @@ export function Metodologia() {
     <section
       id="metodologia"
       data-nav="metodologia"
-      data-tema="oscuro"
+      data-tema="blanco"
       className={`seccion ${styles.metodologia}`}
       aria-labelledby="metodologia-titulo"
     >
       <div className="contenedor">
-        <header className={styles.encabezado}>
-          <p className="antetitulo">Metodología</p>
-          <h2 id="metodologia-titulo" className="titulo-seccion">
-            Una ruta clara, de la primera conversación al seguimiento.
-          </h2>
-          <p className="lead">
-            Así acompañamos a cada organización: cuatro momentos que ordenan el trabajo y mantienen la vista en los
-            objetivos.
-          </p>
-        </header>
+        <div className={styles.panel} data-tema="oscuro">
+          <header className={styles.encabezado}>
+            <p className="antetitulo">Metodología</p>
+            <h2 id="metodologia-titulo" className="titulo-seccion">
+              Cómo trabajamos contigo.
+            </h2>
+          </header>
 
-        <div className={styles.recorrido}>
-          <span className={styles.via} aria-hidden="true">
-            <span className={styles.avance} />
-          </span>
-          <ol className={styles.etapas} role="list">
-            {etapas.map((e, i) => (
-              <li key={e.numero} className={styles.etapa} data-revelar style={{ "--retraso": i } as CSSProperties}>
-                <Marcador etapa={i} />
-                <span className={styles.numero}>{e.numero}</span>
-                <h3 className={styles.nombre}>{e.nombre}</h3>
-                <p className={styles.texto}>{e.texto}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
+          <div className={styles.recorrido}>
+            <span className={styles.via} aria-hidden="true">
+              <span className={styles.avance} />
+            </span>
+            <ol className={styles.etapas} role="list">
+              {etapas.map((e, i) => (
+                <li key={e.numero} className={styles.etapa} data-revelar style={{ "--retraso": i } as CSSProperties}>
+                  <Marcador etapa={i} />
+                  <span className={styles.numero}>{e.numero}</span>
+                  <h3 className={styles.nombre}>{e.nombre}</h3>
+                  <p className={styles.texto}>{e.texto}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
 
-        <div className={styles.cierre}>
-          <p>
-            <strong>El primer paso es un prediagnóstico.</strong> Conversamos sobre tu necesidad y definimos juntos por
-            dónde empezar.
-          </p>
-          <a href="#contacto" className={`${boton.boton} ${boton.primario}`}>
-            Agenda tu prediagnóstico
-            <IconoFlecha className={boton.flecha} />
-          </a>
+          <div className={styles.cierre}>
+            <p>El primer paso es un prediagnóstico.</p>
+            <a href="#contacto" className={`${boton.boton} ${boton.primario}`}>
+              Agenda tu prediagnóstico
+              <IconoFlecha className={boton.flecha} />
+            </a>
+          </div>
         </div>
       </div>
     </section>

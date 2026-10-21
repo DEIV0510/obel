@@ -1,44 +1,45 @@
-.conversion {
-  overflow: clip;
-  padding-block: clamp(6rem, 4rem + 9vw, 12rem);
-}
-
-.reticula {
+.panel {
   position: relative;
-  z-index: 1;
-}
-
-.titulo {
-  margin-top: var(--s-6);
-  max-width: 13ch;
-  font-family: var(--f-display);
-  font-size: clamp(2.6rem, 1.2rem + 6vw, 7.5rem);
-  line-height: 0.94;
-  letter-spacing: -0.03em;
-}
-
-.pie {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6);
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+  padding: clamp(1.75rem, 1rem + 4vw, 4.5rem);
+  border-radius: var(--r-panel);
+  background: var(--fondo);
+  color: var(--texto);
 }
 
 @media (min-width: 56rem) {
-  .pie {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  .panel {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     align-items: end;
   }
 }
 
 .texto {
-  max-width: 40ch;
-  font-size: var(--t-lead);
-  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--s-4);
+}
+
+.texto p {
+  max-width: 44ch;
   color: var(--texto-2);
 }
 
+.titulo {
+  max-width: 15ch;
+  font-family: var(--f-display);
+  font-size: clamp(min(1.9rem, 9vw), 1.2rem + 2.6vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
 .acciones {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-3);
@@ -46,17 +47,19 @@
 
 @media (min-width: 56rem) {
   .acciones {
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    justify-self: end;
+    width: min(100%, 19rem);
   }
 }
 
-/* Silueta gigante de la ruta O, recortada por el borde: cierra el ciclo que
-   abrió la portada. Su esquina se ilumina en amarillo. */
+/* Silueta de la ruta O en la esquina del panel; su esquina se ilumina. */
 .silueta {
   position: absolute;
-  right: var(--margen);
-  top: clamp(3rem, 9vw, 7rem);
-  width: clamp(15rem, 34vw, 31rem);
+  right: -3rem;
+  top: -3rem;
+  width: clamp(12rem, 26vw, 22rem);
   height: auto;
   overflow: visible;
   pointer-events: none;
@@ -65,7 +68,7 @@
 .contorno {
   fill: none;
   stroke: rgb(255 255 255 / 0.14);
-  stroke-width: 1.2;
+  stroke-width: 1.4;
 }
 
 .esquina {
@@ -86,7 +89,7 @@
     }
 
     .esquina {
-      animation-range: cover 35% cover 55%;
+      animation-range: cover 30% cover 50%;
     }
   }
 }
@@ -97,14 +100,5 @@
   }
   to {
     stroke-dashoffset: 0;
-  }
-}
-
-@media (max-width: 56rem) {
-  .silueta {
-    top: 2.5rem;
-    right: -4.5rem;
-    width: 15rem;
-    opacity: 0.8;
   }
 }

@@ -419,9 +419,8 @@ export function FormularioPrediagnostico() {
           </span>
         </label>
         <p id={`${id}-aviso-datos`} className={styles.ayuda}>
-          Responsable: {sitio.marca}, {sitio.direccion.calle}, {sitio.direccion.ciudad} · WhatsApp {numeroVisible()}.
-          Finalidad: atender esta solicitud y contactarte sobre ella. Como titular puedes conocer, actualizar,
-          rectificar y suprimir tus datos, y revocar esta autorización (Ley 1581 de 2012), a través de estos canales.
+          Responsable: {sitio.marca} (WhatsApp {numeroVisible()}). Usamos tus datos para atender esta solicitud; puedes
+          consultarlos, corregirlos, suprimirlos o revocar la autorización (Ley 1581 de 2012).
         </p>
         {error("autorizacion")}
       </div>

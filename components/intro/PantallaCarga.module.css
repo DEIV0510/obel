@@ -165,3 +165,21 @@
     transform: scaleX(0);
   }
 }
+
+/* «Reducir movimiento»: logotipo fijo (sin trazos ni desplazamientos) y
+   salida por fundido. El retiro de emergencia conserva su retraso. */
+@media (prefers-reduced-motion: reduce) {
+  .intro[data-estado="cargando"] {
+    animation-delay: 4s !important;
+  }
+
+  .intro[data-estado="saliendo"] {
+    transform: none;
+    opacity: 0;
+    transition: opacity 450ms ease;
+  }
+
+  .intro[data-estado="saliendo"] .centro {
+    transform: none;
+  }
+}

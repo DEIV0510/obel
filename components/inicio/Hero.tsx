@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
+import { equipo } from "@/content/equipo";
 import { servicios } from "@/content/servicios";
 import { enlaceWhatsapp, mensajes } from "@/lib/whatsapp";
 import { IconoFlecha, IconoFlechaAbajo, IconoWhatsapp } from "@/components/ui/Iconos";
@@ -50,14 +52,30 @@ export function Hero() {
             </a>
           </div>
 
-          <p className={styles.directo} data-entrada style={orden(7)}>
-            <span>¿Prefieres conversar ahora?</span>
-            <a href={enlaceWhatsapp(mensajes.general)} target="_blank" rel="noopener noreferrer" className={boton.enlace}>
-              <IconoWhatsapp tamano={18} />
-              Habla con un consultor
-              <span className="solo-lectores"> (abre WhatsApp)</span>
-            </a>
-          </p>
+          <div className={styles.directo} data-entrada style={orden(7)}>
+            <ul role="list" className={styles.avatares} aria-label="Equipo de OBEL Colombia">
+              {equipo.map((p) => (
+                <li key={p.nombre}>
+                  <Image
+                    src={p.foto}
+                    alt={p.nombre}
+                    width={44}
+                    height={44}
+                    sizes="44px"
+                    style={{ objectPosition: p.encuadre }}
+                  />
+                </li>
+              ))}
+            </ul>
+            <p>
+              <span className={styles.directoTexto}>Un equipo de {equipo.length} especialistas</span>
+              <a href={enlaceWhatsapp(mensajes.general)} target="_blank" rel="noopener noreferrer" className={boton.enlace}>
+                <IconoWhatsapp tamano={18} />
+                Habla con un consultor
+                <span className="solo-lectores"> (abre WhatsApp)</span>
+              </a>
+            </p>
+          </div>
         </div>
 
         <div className={styles.figura}>

@@ -1,5 +1,5 @@
 .servicios {
-  /* Tinta: versión del color de marca con contraste suficiente sobre papel */
+  /* Tinta: versión del color de marca con contraste suficiente sobre blanco */
   --tinta: var(--texto);
   --marca: var(--texto);
 }
@@ -24,192 +24,133 @@
 .encabezado {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-5);
-  max-width: 52rem;
-}
-
-.lead {
-  margin-top: var(--s-2);
-}
-
-.cuerpo {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-7);
-  margin-top: clamp(3rem, 6vw, 5rem);
+  gap: var(--s-4);
+  align-items: end;
 }
 
 @media (min-width: 64rem) {
-  .cuerpo {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  .encabezado {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
     gap: var(--separacion);
   }
 }
 
-/* ── Índice fijo ── */
-.indice {
-  display: none;
+.lead {
+  max-width: 40ch;
+  color: var(--texto-2);
 }
 
-@media (min-width: 64rem) {
-  .indice {
-    display: block;
-    position: sticky;
-    top: calc(var(--alto-cabecera) + 2.5rem);
-    align-self: start;
+/* ── Tarjetas ── */
+.lista {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 48rem) {
+  .lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.indice ol {
-  border-top: 1px solid var(--linea);
-}
-
-.indice a {
+.tarjeta {
   position: relative;
   display: flex;
-  gap: var(--s-4);
-  align-items: baseline;
-  padding: var(--s-4) var(--s-4) var(--s-4) 0;
-  border-bottom: 1px solid var(--linea);
-  font-weight: 500;
-  line-height: 1.35;
-  text-decoration: none;
-  color: var(--texto-2);
+  flex-direction: column;
+  padding: clamp(1.4rem, 1rem + 1.4vw, 2.1rem);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-tarjeta);
+  background: var(--c-blanco);
+  overflow: hidden;
   transition:
-    color var(--d-media) ease,
-    padding-left var(--d-media) var(--e-salida);
+    transform var(--d-lenta) var(--e-salida),
+    box-shadow var(--d-lenta) var(--e-salida),
+    border-color var(--d-media) ease;
 }
 
-.indice a::before {
+/* Filete superior en el color de la línea, que se completa al pasar */
+.tarjeta::before {
   content: "";
   position: absolute;
+  top: 0;
   left: 0;
-  top: 50%;
-  width: 0.625rem;
-  height: 0.625rem;
-  margin-top: -0.3125rem;
-  border-radius: 50% 1px 50% 50%;
+  width: 4.5rem;
+  height: 4px;
   background: var(--marca);
-  transform: scale(0);
-  transition: transform var(--d-media) var(--e-salida);
+  transition: width var(--d-lenta) var(--e-salida);
 }
 
-.indice a:hover {
-  color: var(--texto);
+@media (hover: hover) {
+  .tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-tarjeta);
+    border-color: transparent;
+  }
+
+  .tarjeta:hover::before {
+    width: 100%;
+  }
 }
 
-.indice a[aria-current="true"] {
-  padding-left: 1.5rem;
-  color: var(--texto);
-  font-weight: 600;
+.cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.indice a[aria-current="true"]::before {
-  transform: scale(1);
-}
-
-.indiceNumero {
+.numero {
   font-size: var(--t-xs);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--tinta);
 }
 
-/* ── Bloques de servicio ── */
-.lista {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.servicio {
-  position: relative;
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid var(--linea-fuerte);
-}
-
-.servicio:first-child {
-  padding-top: clamp(1.75rem, 3vw, 2.5rem);
-}
-
-.servicio::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: 0;
-  width: 4.5rem;
-  height: 3px;
-  background: var(--marca);
-}
-
-.cabeza {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s-5);
-}
-
-.numero {
-  font-family: var(--f-display);
-  font-size: clamp(3.25rem, 2.4rem + 3.6vw, 6rem);
-  line-height: 0.85;
-  letter-spacing: -0.03em;
-  color: var(--tinta);
-}
-
 .glifo {
-  width: clamp(3rem, 2.5rem + 2vw, 4.25rem);
+  width: 2.75rem;
   height: auto;
   color: var(--tinta);
 }
 
 .titulo {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  max-width: 18ch;
+  margin-top: var(--s-4);
   font-family: var(--f-display);
   font-size: var(--t-h3);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
 }
 
 .descripcion {
-  margin-top: var(--s-4);
-  max-width: 50ch;
-  font-size: var(--t-lead);
-  line-height: 1.5;
+  margin-top: var(--s-3);
+  font-size: var(--t-sm);
+  line-height: 1.55;
   color: var(--texto-2);
 }
 
 .capacidades {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: var(--s-6);
-  border-top: 1px solid var(--linea);
-}
-
-@media (min-width: 40rem) {
-  .capacidades {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--separacion);
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
 }
 
 .capacidades li {
-  position: relative;
-  padding: 0.85rem 0 0.85rem 1.4rem;
-  border-bottom: 1px solid var(--linea);
-  font-size: var(--t-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: var(--c-papel);
+  font-size: var(--t-xs);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
-/* Viñeta: pequeña silueta de la O en el color de la línea */
 .capacidades li::before {
   content: "";
-  position: absolute;
-  left: 0;
-  top: 1.2rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 50% 1px 50% 50%;
   background: var(--marca);
 }
@@ -218,13 +159,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--s-3) var(--s-5);
-  margin-top: var(--s-6);
+  gap: var(--s-2) var(--s-5);
+  margin-top: auto;
+  padding-top: var(--s-6);
 }
 
-@media (max-width: 30rem) {
-  .acciones > a:first-child {
-    width: 100%;
-    white-space: normal;
+@media (forced-colors: active) {
+  .tarjeta::before,
+  .capacidades li::before {
+    background: CanvasText;
   }
 }
