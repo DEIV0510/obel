@@ -1,0 +1,78 @@
+.flotante {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 3.5rem;
+  min-width: 3.5rem;
+  padding: 0 0.95rem;
+  border-radius: 999px 0.5rem 999px 999px;
+  background: var(--c-negro);
+  color: var(--c-blanco);
+  text-decoration: none;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.18),
+    var(--sombra-flotante);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 1rem, 0) scale(0.92);
+  transition:
+    opacity var(--d-media) ease,
+    transform var(--d-lenta) var(--e-salida),
+    visibility 0s linear var(--d-media),
+    gap var(--d-media) var(--e-salida),
+    border-radius var(--d-media) var(--e-salida);
+}
+
+.flotante[data-visible="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity var(--d-media) ease,
+    transform var(--d-lenta) var(--e-salida),
+    visibility 0s,
+    gap var(--d-media) var(--e-salida),
+    border-radius var(--d-media) var(--e-salida);
+}
+
+.flotante svg {
+  flex: none;
+}
+
+/* La etiqueta se despliega al pasar el cursor o enfocar (escritorio) */
+.etiqueta {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  transition: max-width var(--d-lenta) var(--e-salida);
+}
+
+@media (hover: hover) {
+  .flotante:hover,
+  .flotante:focus-visible {
+    gap: 0.6rem;
+    border-radius: 999px;
+  }
+
+  .flotante:hover .etiqueta,
+  .flotante:focus-visible .etiqueta {
+    max-width: 14rem;
+  }
+}
+
+.flotante:focus-visible {
+  outline: 2px solid var(--c-amarillo);
+  outline-offset: 3px;
+}
+
+/* El menú móvil abierto tiene prioridad */
+:global(html:has(#menu-movil[data-abierto="true"])) .flotante {
+  opacity: 0;
+  visibility: hidden;
+}

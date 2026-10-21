@@ -1,0 +1,143 @@
+/* Botones y enlaces de acción. Usan los tokens semánticos del tema de la
+   sección (claro/oscuro), así el mismo botón funciona en cualquier fondo. */
+
+.boton {
+  --radio: var(--r-boton);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.45rem;
+  border: 1px solid transparent;
+  border-radius: var(--radio);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.005em;
+  text-align: center;
+  text-decoration: none;
+  text-wrap: balance;
+  cursor: pointer;
+  transition:
+    border-radius var(--d-media) var(--e-salida),
+    background-color var(--d-media) ease,
+    border-color var(--d-media) ease,
+    color var(--d-media) ease,
+    transform var(--d-rapida) ease;
+}
+
+/* En pantallas angostas el texto puede partirse antes que desbordar */
+@media (min-width: 30rem) {
+  .boton {
+    white-space: nowrap;
+  }
+}
+
+.boton svg {
+  flex: none;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+/* Microinteracción de marca: la esquina recta de la «O» se redondea y la
+   flecha avanza, como si el proyecto cerrara su ciclo. */
+@media (hover: hover) {
+  .boton:hover {
+    --radio: 999px;
+  }
+
+  .boton:hover .flecha {
+    transform: translateX(4px);
+  }
+
+  .boton:hover .flechaAbajo {
+    transform: translateY(3px);
+  }
+}
+
+.boton:active {
+  transform: translateY(1px);
+}
+
+.boton:focus-visible {
+  outline-offset: 4px;
+}
+
+.boton[disabled],
+.boton[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primario {
+  background: var(--boton-fondo);
+  color: var(--boton-texto);
+}
+
+@media (hover: hover) {
+  .primario:hover {
+    background: color-mix(in oklab, var(--boton-fondo) 86%, var(--texto) 14%);
+  }
+}
+
+.secundario {
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--linea-fuerte);
+}
+
+@media (hover: hover) {
+  .secundario:hover {
+    border-color: var(--texto);
+    background: color-mix(in oklab, var(--texto) 6%, transparent);
+  }
+}
+
+.ancho {
+  width: 100%;
+}
+
+.compacto {
+  min-height: 2.75rem;
+  padding: 0.6rem 1.1rem;
+  font-size: var(--t-xs);
+}
+
+/* Enlace textual con subrayado que se dibuja */
+.enlace {
+  display: inline-flex;
+  width: fit-content;
+  justify-self: start;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  font-weight: 600;
+  font-size: var(--t-sm);
+  color: var(--texto);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 0.55rem) / 100% 1px no-repeat;
+  transition: background-size var(--d-media) var(--e-salida);
+}
+
+.enlace svg {
+  flex: none;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+@media (hover: hover) {
+  .enlace:hover {
+    background-size: 0% 1px;
+    background-position: 100% calc(100% - 0.55rem);
+  }
+
+  .enlace:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+@media (forced-colors: active) {
+  .boton {
+    border-color: ButtonText;
+  }
+}

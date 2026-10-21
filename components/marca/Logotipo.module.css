@@ -1,0 +1,32 @@
+.marca {
+  display: inline-block;
+  flex: none;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Proporciones exactas del archivo recortado (lib/marca-medidas.json) */
+.logotipo {
+  aspect-ratio: 800 / 247;
+  -webkit-mask-image: url("/marca/obel-logotipo.png");
+  mask-image: url("/marca/obel-logotipo.png");
+}
+
+.simbolo {
+  aspect-ratio: 1;
+  -webkit-mask-image: url("/marca/obel-simbolo.png");
+  mask-image: url("/marca/obel-simbolo.png");
+}
+
+@media (forced-colors: active) {
+  .marca {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}

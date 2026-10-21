@@ -1,0 +1,140 @@
+.pie {
+  position: relative;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.reticula {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7) var(--separacion);
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+}
+
+@media (min-width: 40rem) {
+  .reticula {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .marca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .reticula {
+    grid-template-columns: minmax(0, 5fr) repeat(3, minmax(0, 2.4fr));
+  }
+
+  .marca {
+    grid-column: auto;
+  }
+}
+
+.marca {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: var(--s-4);
+}
+
+.logo {
+  height: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}
+
+.nombre {
+  font-weight: 600;
+}
+
+.descripcion {
+  max-width: 40ch;
+  font-size: var(--t-sm);
+  color: var(--texto-2);
+  margin-bottom: var(--s-2);
+}
+
+.titulo {
+  margin-bottom: var(--s-4);
+  font-family: var(--f-texto);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+
+.lista {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.lista a,
+.direccion a {
+  display: inline-block;
+  padding-block: 0.4rem;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.lista a:hover,
+.direccion a:hover {
+  text-decoration: underline;
+}
+
+.direccion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2);
+  font-style: normal;
+}
+
+.redes {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+}
+
+.redes a {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 50%;
+  transition:
+    background-color var(--d-media) ease,
+    color var(--d-media) ease;
+}
+
+.redes a:hover {
+  background: var(--c-blanco);
+  color: var(--c-negro);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-5);
+  padding-block: var(--s-5) calc(var(--s-5) + 4.5rem);
+  border-top: 1px solid var(--linea);
+  font-size: var(--t-xs);
+  color: var(--texto-2);
+}
+
+@media (min-width: 64rem) {
+  .legal {
+    padding-bottom: var(--s-5);
+  }
+}
+
+.legalDerecha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+}
+
+.legalDerecha a {
+  color: var(--texto);
+}

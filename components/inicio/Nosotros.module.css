@@ -1,0 +1,191 @@
+.nosotros {
+  overflow: clip;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+}
+
+@media (min-width: 64rem) {
+  .intro {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--separacion);
+    align-items: end;
+  }
+}
+
+.titulo {
+  max-width: 14ch;
+}
+
+.texto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  color: var(--texto-2);
+  max-width: 46ch;
+}
+
+.destacado {
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: var(--texto);
+}
+
+/* ── Gráfico de conexión ── */
+.conexion {
+  width: min(100%, 40rem);
+  height: auto;
+  margin: clamp(3rem, 6vw, 5rem) auto 0;
+  overflow: visible;
+  font-family: var(--f-texto);
+}
+
+.conexion text {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--texto-2);
+}
+
+.hilo {
+  fill: none;
+  stroke: var(--linea-fuerte);
+  stroke-width: 1.5;
+  stroke-dasharray: 0.01 0.012;
+}
+
+.nodoA circle {
+  fill: var(--texto);
+}
+
+.nodoB circle {
+  fill: var(--fondo);
+  stroke: var(--texto);
+  stroke-width: 2.5;
+}
+
+.nodoC path {
+  fill: var(--c-amarillo);
+}
+
+@media (max-width: 40rem) {
+  .conexion text {
+    font-size: 24px;
+  }
+}
+
+/* ── Trayectoria ── */
+.subtitulo {
+  font-family: var(--f-texto);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+
+.trayectoria {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+}
+
+.hitos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+  margin-top: var(--s-5);
+}
+
+@media (min-width: 48rem) {
+  .hitos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--separacion);
+  }
+}
+
+.hitos li {
+  position: relative;
+  padding-top: var(--s-5);
+  border-top: 1px dashed var(--linea-fuerte);
+}
+
+.hitos li::before {
+  content: "";
+  position: absolute;
+  top: -0.3125rem;
+  left: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--texto);
+}
+
+.hitos li:last-child::before {
+  border-radius: 50% 1px 50% 50%;
+  background: var(--c-amarillo);
+}
+
+.periodo {
+  font-family: var(--f-display);
+  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hitoNombre {
+  margin-top: var(--s-2);
+  font-weight: 600;
+}
+
+.hitoTexto {
+  margin-top: var(--s-2);
+  font-size: var(--t-sm);
+  color: var(--texto-2);
+}
+
+/* ── Misión y visión ── */
+.declaraciones {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--linea);
+}
+
+@media (min-width: 48rem) {
+  .declaraciones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--separacion);
+  }
+}
+
+.declaraciones p {
+  margin-top: var(--s-3);
+  max-width: 52ch;
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+/* ── Valores ── */
+.valores {
+  margin-top: var(--s-7);
+}
+
+.valores ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+}
+
+.valores li {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-boton);
+  font-size: var(--t-sm);
+  font-weight: 500;
+}

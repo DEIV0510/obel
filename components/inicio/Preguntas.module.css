@@ -1,0 +1,122 @@
+.reticula {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7);
+}
+
+@media (min-width: 64rem) {
+  .reticula {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: var(--separacion);
+    align-items: start;
+  }
+
+  .encabezado {
+    position: sticky;
+    top: calc(var(--alto-cabecera) + 2rem);
+  }
+}
+
+.encabezado {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: var(--s-5);
+}
+
+.ayuda {
+  max-width: 32ch;
+  color: var(--texto-2);
+}
+
+.lista {
+  border-top: 1px solid var(--linea-fuerte);
+}
+
+.item {
+  border-bottom: 1px solid var(--linea);
+  interpolate-size: allow-keywords;
+}
+
+.pregunta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  min-height: 3.5rem;
+  padding-block: var(--s-5);
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.35;
+  cursor: pointer;
+  list-style: none;
+}
+
+.pregunta::-webkit-details-marker {
+  display: none;
+}
+
+.pregunta:hover {
+  color: var(--c-azul);
+}
+
+/* Signo + que gira a − ; su caja usa la esquina de la marca */
+.signo {
+  position: relative;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 50% 3px 50% 50%;
+  transition:
+    background-color var(--d-media) ease,
+    border-color var(--d-media) ease,
+    border-radius var(--d-media) var(--e-salida);
+}
+
+.signo::before,
+.signo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.75rem;
+  height: 2px;
+  margin: -1px 0 0 -0.375rem;
+  background: currentColor;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+.signo::after {
+  transform: rotate(90deg);
+}
+
+.item[open] .signo {
+  border-color: var(--texto);
+  border-radius: 50%;
+  background: var(--texto);
+  color: var(--fondo);
+}
+
+.item[open] .signo::after {
+  transform: rotate(0deg);
+}
+
+.respuesta {
+  padding-bottom: var(--s-5);
+  max-width: 62ch;
+  color: var(--texto-2);
+}
+
+/* Apertura suave donde el navegador lo permite */
+.item::details-content {
+  height: 0;
+  overflow: clip;
+  transition:
+    height var(--d-media) var(--e-salida),
+    content-visibility var(--d-media) allow-discrete;
+}
+
+.item[open]::details-content {
+  height: auto;
+}

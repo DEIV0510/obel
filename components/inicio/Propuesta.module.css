@@ -1,0 +1,105 @@
+.propuesta {
+  overflow: clip;
+}
+
+.frase {
+  margin-top: var(--s-6);
+  max-width: 17ch;
+  font-family: var(--f-display);
+  font-size: clamp(2.3rem, 1.1rem + 4.9vw, 6.1rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  view-timeline: --frase block;
+}
+
+.frase span {
+  color: var(--texto);
+}
+
+/* Lectura guiada: cada palabra pasa de tenue a blanco según avanza el
+   desplazamiento (animación ligada al scroll, sin JavaScript). Donde no hay
+   soporte o se pide reducir el movimiento, el texto se ve completo. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .frase span {
+      animation: iluminar linear both;
+      animation-timeline: --frase;
+      animation-range: cover calc(14% + var(--k) * 2.6%) cover calc(22% + var(--k) * 2.6%);
+    }
+  }
+}
+
+@keyframes iluminar {
+  from {
+    color: rgb(255 255 255 / 0.28);
+  }
+  to {
+    color: var(--c-blanco);
+  }
+}
+
+.cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7);
+  margin-top: clamp(3rem, 6vw, 5.5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--linea);
+}
+
+.sintesis {
+  max-width: 46ch;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+
+.sintesis strong {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+.diferenciales {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6) var(--separacion);
+}
+
+@media (min-width: 40rem) {
+  .diferenciales {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .diferenciales {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.diferenciales li {
+  padding-left: var(--s-5);
+  border-left: 1px solid var(--linea);
+}
+
+.diferenciales p {
+  margin-top: var(--s-2);
+  font-size: var(--t-sm);
+  color: var(--texto-2);
+}
+
+.numero {
+  display: block;
+  margin-bottom: var(--s-4);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-amarillo);
+}
+
+.titulo {
+  font-family: var(--f-texto);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}

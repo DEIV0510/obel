@@ -1,0 +1,110 @@
+.conversion {
+  overflow: clip;
+  padding-block: clamp(6rem, 4rem + 9vw, 12rem);
+}
+
+.reticula {
+  position: relative;
+  z-index: 1;
+}
+
+.titulo {
+  margin-top: var(--s-6);
+  max-width: 13ch;
+  font-family: var(--f-display);
+  font-size: clamp(2.6rem, 1.2rem + 6vw, 7.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+
+.pie {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (min-width: 56rem) {
+  .pie {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: end;
+  }
+}
+
+.texto {
+  max-width: 40ch;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--texto-2);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+@media (min-width: 56rem) {
+  .acciones {
+    justify-content: flex-end;
+  }
+}
+
+/* Silueta gigante de la ruta O, recortada por el borde: cierra el ciclo que
+   abrió la portada. Su esquina se ilumina en amarillo. */
+.silueta {
+  position: absolute;
+  right: var(--margen);
+  top: clamp(3rem, 9vw, 7rem);
+  width: clamp(15rem, 34vw, 31rem);
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.contorno {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.14);
+  stroke-width: 1.2;
+}
+
+.esquina {
+  fill: none;
+  stroke: var(--c-amarillo);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .contorno,
+    .esquina {
+      stroke-dasharray: 1;
+      animation: dibujar linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    .esquina {
+      animation-range: cover 35% cover 55%;
+    }
+  }
+}
+
+@keyframes dibujar {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 56rem) {
+  .silueta {
+    top: 2.5rem;
+    right: -4.5rem;
+    width: 15rem;
+    opacity: 0.8;
+  }
+}

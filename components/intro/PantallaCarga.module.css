@@ -1,0 +1,167 @@
+/* Pantalla de carga: el logotipo blanco se traza desde la esquina de la O,
+   las letras BEL salen de detrás de ella y aparece «Colombia». Oculta por
+   defecto: solo la muestra el script en línea (sin JS, no existe). */
+
+@property --barrido {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.intro {
+  display: none;
+}
+
+.intro[data-estado="cargando"],
+.intro[data-estado="saliendo"] {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  background: var(--c-negro);
+  color: var(--c-blanco);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Retiro de emergencia: nunca bloquea más de 4 s, aunque falle todo. */
+.intro[data-estado="cargando"] {
+  animation: emergencia 1ms linear 4s forwards;
+}
+
+@keyframes emergencia {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+/* El telón sube y deja ver la portada; su borde inferior lleva el filete
+   de cuatro colores de la marca. */
+.intro[data-estado="saliendo"] {
+  transform: translate3d(0, -100%, 0);
+  transition: transform 700ms var(--e-suave);
+  pointer-events: none;
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--c-azul) 0 25%,
+    var(--c-verde) 25% 50%,
+    var(--c-rojo) 50% 75%,
+    var(--c-amarillo) 75%
+  );
+}
+
+.centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(11rem, 44vw, 21rem);
+  transition:
+    transform 700ms var(--e-suave),
+    opacity 500ms ease;
+}
+
+.intro[data-estado="saliendo"] .centro {
+  transform: translate3d(0, 40%, 0);
+  opacity: 0;
+}
+
+.logo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 800 / 247;
+}
+
+.o,
+.resto,
+.trazo,
+.letras {
+  position: absolute;
+  inset: 0;
+}
+
+.o {
+  clip-path: inset(0 calc((1 - var(--fin-o)) * 100%) 0 0);
+}
+
+.resto {
+  clip-path: inset(0 0 0 calc(var(--fin-o) * 100%));
+}
+
+.trazo,
+.letras {
+  background: var(--c-blanco);
+  -webkit-mask: url("/marca/obel-logotipo.png") center / contain no-repeat;
+  mask: url("/marca/obel-logotipo.png") center / contain no-repeat;
+}
+
+/* La O se dibuja con un barrido circular que parte de su esquina recta. */
+.trazo {
+  -webkit-mask:
+    url("/marca/obel-logotipo.png") center / contain no-repeat,
+    conic-gradient(from 45deg at var(--cx) var(--cy), #000 var(--barrido), transparent 0) 0 0 / 100% 100% no-repeat;
+  -webkit-mask-composite: source-in;
+  mask:
+    url("/marca/obel-logotipo.png") center / contain no-repeat,
+    conic-gradient(from 45deg at var(--cx) var(--cy), #000 var(--barrido), transparent 0) 0 0 / 100% 100% no-repeat;
+  mask-composite: intersect;
+  animation: barrido 620ms var(--e-suave) 60ms both;
+}
+
+@keyframes barrido {
+  to {
+    --barrido: 360deg;
+  }
+}
+
+/* B, E y L salen desde detrás de la O. */
+.letras {
+  animation: letras 680ms var(--e-salida) 420ms both;
+}
+
+@keyframes letras {
+  from {
+    transform: translate3d(-70%, 0, 0);
+  }
+}
+
+.pais {
+  margin-top: 1.1rem;
+  padding-left: 0.62em;
+  font-size: clamp(0.68rem, 0.55rem + 0.5vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.62em;
+  text-transform: uppercase;
+  color: var(--c-gris-400);
+  animation: aparecer 520ms var(--e-salida) 620ms both;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.6rem, 0);
+  }
+}
+
+.progreso {
+  width: 100%;
+  height: 2px;
+  margin-top: 1.6rem;
+  background: rgb(255 255 255 / 0.85);
+  transform-origin: left center;
+  animation: progreso 750ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+
+@keyframes progreso {
+  from {
+    transform: scaleX(0);
+  }
+}

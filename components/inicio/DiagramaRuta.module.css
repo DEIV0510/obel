@@ -1,0 +1,132 @@
+.diagrama {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--f-texto);
+}
+
+.contraforma {
+  fill: none;
+  stroke: var(--linea-fuerte);
+  stroke-width: 1;
+  stroke-dasharray: 0.006 0.012;
+  animation: aparecer 900ms ease 150ms both;
+}
+
+.inicio circle {
+  fill: var(--texto);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brotar 520ms var(--e-salida) 120ms both;
+}
+
+.etiquetaIdea {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  fill: var(--texto);
+  animation: aparecer 600ms ease 200ms both;
+}
+
+/* Cada tramo se dibuja después del anterior */
+.tramo {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: butt;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: trazar 520ms var(--e-suave) calc(380ms + var(--i) * 470ms) forwards;
+}
+
+.azul {
+  stroke: var(--c-azul);
+}
+.verde {
+  stroke: var(--c-verde);
+}
+.rojo {
+  stroke: var(--c-rojo);
+}
+.amarillo {
+  stroke: var(--c-amarillo);
+}
+
+.nodo circle {
+  fill: var(--fondo);
+  stroke: var(--texto);
+  stroke-width: 2.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: brotar 420ms var(--e-salida) calc(820ms + var(--i) * 470ms) both;
+}
+
+.nodo .nodoFinal {
+  fill: var(--texto);
+}
+
+.etiqueta {
+  font-size: 18px;
+  fill: var(--texto);
+  animation: aparecer 520ms ease calc(860ms + var(--i) * 470ms) both;
+}
+
+.numero {
+  font-weight: 700;
+  fill: var(--texto-2);
+}
+
+.nombre {
+  font-weight: 600;
+}
+
+.resultado {
+  font-family: var(--f-display);
+  font-size: 25px;
+  letter-spacing: -0.01em;
+  fill: var(--texto);
+  animation: aparecer 700ms ease 2.5s both;
+}
+
+@keyframes trazar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes brotar {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Mientras la pantalla de carga está visible, la secuencia espera. */
+:global(:root:has(#intro[data-estado="cargando"])) .diagrama * {
+  animation-play-state: paused;
+}
+
+/* En pantallas pequeñas solo se muestran los números de etapa. */
+@media (max-width: 40rem) {
+  .nombre {
+    display: none;
+  }
+
+  .etiqueta {
+    font-size: 26px;
+  }
+
+  .etiquetaIdea {
+    font-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tramo {
+    stroke-dashoffset: 0;
+  }
+}

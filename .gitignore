@@ -1,0 +1,36 @@
+# dependencias
+/node_modules
+/.pnp
+.pnp.*
+
+# build
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
+
+# entorno local (nunca subir secretos)
+.env
+.env*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# herramientas
+/.vercel
+/.playwright-mcp
+/qa
+
+# configuración local del editor/agente
+/.claude
+
+# Documentos originales de la empresa: no se publican en el repositorio
+*.pdf

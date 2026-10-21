@@ -1,0 +1,318 @@
+.cabecera {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  color: var(--texto);
+  background: transparent;
+  transition:
+    background-color var(--d-media) ease,
+    color var(--d-media) ease,
+    box-shadow var(--d-media) ease;
+}
+
+.cabecera[data-desplazada="true"] {
+  background: var(--fondo);
+  box-shadow: 0 1px 0 var(--linea);
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  height: var(--alto-cabecera);
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-right: auto;
+  color: inherit;
+}
+
+.logo {
+  height: clamp(1.4rem, 1.2rem + 0.6vw, 1.75rem);
+  transition: background-color var(--d-media) ease;
+}
+
+/* ── Navegación de escritorio ── */
+.nav {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .nav {
+    display: block;
+  }
+}
+
+.nav ul {
+  display: flex;
+  gap: clamp(1rem, 0.2rem + 1.6vw, 2.25rem);
+}
+
+.nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.45rem;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+.nav a:hover::after,
+.nav a[aria-current="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.cta {
+  display: none;
+}
+
+@media (min-width: 22.5rem) {
+  .cta {
+    display: inline-flex;
+  }
+}
+
+.ctaCorto {
+  display: inline;
+}
+
+/* En pantallas pequeñas el texto largo sigue siendo el nombre accesible */
+.ctaLargo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (min-width: 64rem) {
+  .ctaCorto {
+    display: none;
+  }
+
+  .ctaLargo {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+}
+
+/* ── Botón del menú ── */
+.alternar {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+}
+
+@media (min-width: 64rem) {
+  .alternar {
+    display: none;
+  }
+}
+
+.lineas,
+.lineas::before {
+  display: block;
+  width: 1.375rem;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--d-media) var(--e-salida);
+}
+
+.lineas {
+  position: relative;
+  transform: translateY(-4px);
+}
+
+.lineas::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 0.875rem;
+  transition:
+    transform var(--d-media) var(--e-salida),
+    width var(--d-media) var(--e-salida),
+    top var(--d-media) var(--e-salida);
+}
+
+.alternar[aria-expanded="true"] .lineas {
+  transform: translateY(0) rotate(45deg);
+}
+
+.alternar[aria-expanded="true"] .lineas::before {
+  top: 0;
+  width: 1.375rem;
+  transform: rotate(-90deg);
+}
+
+/* ── Progreso de lectura (animación ligada al desplazamiento, sin JS) ── */
+.progreso {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--c-azul) 0 25%,
+    var(--c-verde) 25% 50%,
+    var(--c-rojo) 50% 75%,
+    var(--c-amarillo) 75%
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition: opacity var(--d-media) ease;
+}
+
+@supports (animation-timeline: scroll()) {
+  .progreso {
+    animation: avance linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  .cabecera[data-desplazada="true"] .progreso {
+    opacity: 1;
+  }
+}
+
+@keyframes avance {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Panel del menú móvil ── */
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  display: flex;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--fondo);
+  color: var(--texto);
+  visibility: hidden;
+  clip-path: circle(0% at calc(100% - 2.5rem) 2.2rem);
+  transition:
+    clip-path 620ms var(--e-suave),
+    visibility 0s linear 620ms;
+}
+
+.panel[data-abierto="true"] {
+  visibility: visible;
+  clip-path: circle(150% at calc(100% - 2.5rem) 2.2rem);
+  transition:
+    clip-path 720ms var(--e-suave),
+    visibility 0s;
+}
+
+@media (min-width: 64rem) {
+  .panel {
+    display: none;
+  }
+}
+
+.panelContenido {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-7);
+  min-height: 100%;
+  padding-top: calc(var(--alto-cabecera) + var(--s-6));
+  padding-bottom: var(--s-6);
+}
+
+.panelLista a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: 0.55rem;
+  font-family: var(--f-display);
+  font-size: clamp(1.9rem, 1.2rem + 3.6vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--texto);
+}
+
+.panelLista a[aria-current="true"] {
+  color: var(--c-amarillo);
+}
+
+.panelLista li {
+  opacity: 0;
+  transform: translate3d(0, 1rem, 0);
+  transition:
+    opacity 400ms ease,
+    transform 600ms var(--e-salida);
+}
+
+.panel[data-abierto="true"] .panelLista li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(160ms + var(--i) * 55ms);
+}
+
+.panelNumero {
+  font-family: var(--f-texto);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.panelAcciones {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-3);
+}
+
+.panelDato {
+  margin-top: var(--s-2);
+  font-size: var(--t-xs);
+  color: var(--texto-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel[data-abierto="true"] {
+    clip-path: none;
+  }
+}
